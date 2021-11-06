@@ -1,0 +1,11 @@
+package ga.boozeeRunner.src.user.models;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
+public class PostLoginRes {
+    private final Long userId;
+    private final String jwt;
+}
