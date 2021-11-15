@@ -7,10 +7,7 @@ import ga.boozeeRunner.config.BaseResponseStatus;
 import ga.boozeeRunner.src.user.models.*;
 import ga.boozeeRunner.utils.ValidationRegex;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -70,7 +67,6 @@ public class UserInfoController {
      * @RequestBody PostUserReq
      * @return BaseResponse<PostUserRes>
      */
-    @ResponseBody
     @PostMapping("")
     public BaseResponse<PostUserRes> postUsers(@RequestBody PostUserReq parameters) {
         // 1. Body Parameter Validation
@@ -96,6 +92,56 @@ public class UserInfoController {
             return new BaseResponse<>(exception.getStatus());
         }
     }
+
+
+    /**
+     * 로그인 API
+     * [POST] /users/login
+     * @RequestBody PostLoginReq
+     * @return BaseResponse<PostLoginRes>
+     */
+    @PostMapping("/login")
+    public BaseResponse<PostLoginRes> login(@RequestBody PostLoginReq postLoginReq) {
+        // 1. Body Parameter Validation
+        if (postLoginReq.getEmail() == null || postLoginReq.getEmail().length() == 0) {
+            return new BaseResponse<>(BaseResponseStatus.EMPTY_EMAIL);
+        } else if (!ValidationRegex.isRegexEmail(postLoginReq.getEmail())) {
+            return new BaseResponse<>(BaseResponseStatus.INVALID_EMAIL);
+        } else if (postLoginReq.getPassword() == null || postLoginReq.getPassword().length() == 0) {
+            return new BaseResponse<>(BaseResponseStatus.EMPTY_PASSWORD);
+        }
+
+        // 2. Login
+        try {
+            PostLoginRes postLoginRes = userInfoProvider.login(postLoginReq);
+            return new BaseResponse<>(BaseResponseStatus.SUCCESS_LOGIN, postLoginRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+
+    /**
+     * 중복 닉네임 확인 API
+     *
+     */
+    @PostMapping("/nickName")
+    public BaseResponse login(@RequestBody PostUserNickNameReq postUserNickNameReq) {
+        // 1. Body Parameter Validation
+        if (postUserNickNameReq.getNickName() == null || postUserNickNameReq.getNickName().length() == 0) {
+            return new BaseResponse<>(BaseResponseStatus.EMPTY_NICKNAME);
+        }
+
+        // 2. checkUserNickName
+        try {
+                userInfoService.existUserNickName(postUserNickNameReq.getNickName());
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+
+        return new BaseResponse(BaseResponseStatus.SUCCESS);
+    }
+
 
     /**
      * 회원 정보 수정 API
@@ -123,31 +169,7 @@ public class UserInfoController {
 //        }
 //    }
 
-//    /**
-//     * 로그인 API
-//     * [POST] /users/login
-//     * @RequestBody PostLoginReq
-//     * @return BaseResponse<PostLoginRes>
-//     */
-//    @PostMapping("/login")
-//    public BaseResponse<PostLoginRes> login(@RequestBody PostLoginReq parameters) {
-//        // 1. Body Parameter Validation
-//        if (parameters.getEmail() == null || parameters.getEmail().length() == 0) {
-//            return new BaseResponse<>(BaseResponseStatus.EMPTY_EMAIL);
-//        } else if (!ValidationRegex.isRegexEmail(parameters.getEmail())) {
-//            return new BaseResponse<>(BaseResponseStatus.INVALID_EMAIL);
-//        } else if (parameters.getPassword() == null || parameters.getPassword().length() == 0) {
-//            return new BaseResponse<>(BaseResponseStatus.EMPTY_PASSWORD);
-//        }
-//
-//        // 2. Login
-//        try {
-//            PostLoginRes postLoginRes = userInfoProvider.login(parameters);
-//            return new BaseResponse<>(BaseResponseStatus.SUCCESS_LOGIN, postLoginRes);
-//        } catch (BaseException exception) {
-//            return new BaseResponse<>(exception.getStatus());
-//        }
-//    }
+
 
 //    /**
 //     * 회원 탈퇴 API

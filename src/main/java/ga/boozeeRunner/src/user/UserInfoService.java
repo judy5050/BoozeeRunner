@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 
@@ -54,12 +55,6 @@ public class UserInfoService {
         } catch (Exception ignored) {
             throw new BaseException(BaseResponseStatus.FAILED_TO_POST_USER);
         }
-        // 이메일 형식 확인
-        try {
-            checkEmailStr(email);
-        }catch (BaseException exception){
-            throw new BaseException(exception.getStatus());
-        }
 
         UserInfo userInfo = new UserInfo(email, password, nickname, phoneNumber);
 
@@ -78,21 +73,24 @@ public class UserInfoService {
         return new PostUserRes(id, jwt);
     }
 
-    /**
-     * 이메일 형식 확인
-     */
-    public void checkEmailStr(String email) throws BaseException {
-        String pattern1 = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$";
-        if(!Pattern.matches(pattern1,email)){
-            throw new BaseException(BaseResponseStatus.INVALID_EMAIL);
-        }
-    }
+//    /**
+//     * 이메일 형식 확인
+//     */
+//    public void checkEmailStr(String email) throws BaseException {
+//        String pattern1 = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$";
+//        if(!Pattern.matches(pattern1,email)){
+//            throw new BaseException(BaseResponseStatus.INVALID_EMAIL);
+//        }
+//    }
     /**
      * 유저 닉네임 중복 여부 확인하기
      */
 
-    public void existUserNickName(String userNickName){
-
+    public void existUserNickName(String userNickName) throws BaseException {
+        List<UserInfo> userInfoList = userInfoRepository.findByNickName(userNickName);
+        if(userInfoList.size()>0){
+            throw new BaseException(BaseResponseStatus.DUPLICATED_USER);
+        }
     }
 
     /**
@@ -135,5 +133,17 @@ public class UserInfoService {
         } catch (Exception ignored) {
             throw new BaseException(BaseResponseStatus.FAILED_TO_DELETE_USER);
         }
+    }
+
+
+
+    public UserInfo getUserInfo(Long userIdx) throws BaseException {
+
+
+        UserInfo userInfo = userInfoRepository.findById(userIdx).orElse(null);
+        if(userInfo==null){
+            throw new BaseException(BaseResponseStatus.NOT_FOUND_USER);
+        }
+        return userInfo;
     }
 }

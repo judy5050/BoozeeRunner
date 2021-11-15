@@ -47,10 +47,11 @@ public class JwtService {
     public Long getUserId() throws BaseException {
         // 1. JWT 추출
         String accessToken = getJwt();
+        System.out.println("1");
         if (accessToken == null || accessToken.length() == 0) {
             throw new BaseException(BaseResponseStatus.EMPTY_JWT);
         }
-
+        System.out.println("2");
         // 2. JWT parsing
         Jws<Claims> claims;
         try {

@@ -1,9 +1,13 @@
 package ga.boozeeRunner.src.user.models;
 
 import ga.boozeeRunner.config.BaseEntity;
+import ga.boozeeRunner.src.room.model.RoomInfo;
+import ga.boozeeRunner.src.userRoom.model.UserRoomInfo;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PUBLIC) // Unit Test 를 위해 PUBLIC
 @EqualsAndHashCode(callSuper = false)
@@ -43,7 +47,21 @@ public class UserInfo extends BaseEntity {
     @Column(name = "phoneNumber", length = 30)
     private String phoneNumber;
 
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "userRoomIdx")
+//    private UserRoomInfo userRoomInfo;
 
+    @OneToMany(mappedBy = "userInfo")
+    private List<UserRoomInfo> userRoomInfoList=new ArrayList<>();
+
+    @OneToMany(mappedBy = "userInfo",fetch = FetchType.LAZY)
+    private List<RoomInfo> roomInfo=new ArrayList<>();
+
+    @Column(name = "profile")
+    private String profile;
+
+    @Column(name = "msg")
+    private String msg;
 
     public UserInfo(String email, String password, String nickname, String phoneNumber) {
         this.email = email;
