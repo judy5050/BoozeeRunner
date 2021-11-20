@@ -89,7 +89,7 @@ public class UserInfoService {
     public void existUserNickName(String userNickName) throws BaseException {
         List<UserInfo> userInfoList = userInfoRepository.findByNickName(userNickName);
         if(userInfoList.size()>0){
-            throw new BaseException(BaseResponseStatus.DUPLICATED_USER);
+            throw new BaseException(BaseResponseStatus.DUPLICATED_USER_NICK_NAME);
         }
     }
 

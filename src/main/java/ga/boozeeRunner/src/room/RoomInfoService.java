@@ -38,7 +38,9 @@ public class RoomInfoService {
         String code = createCode();
         System.out.println("code = " + code);
         RoomInfo roomInfo = new RoomInfo(userInfo, postRoomReq.getRoomName(), postRoomReq.getRoomType(), postRoomReq.getMeetNumber(), postRoomReq.getIsMorning(), postRoomReq.getMeetTime(), postRoomReq.getStartDate(), postRoomReq.getEndDate(),
-                postRoomReq.getBackGround(),code,postRoomReq.getIsAlone(),postRoomReq.getIsOpen(),postRoomReq.getPlaceName(),postRoomReq.getIsPay(),postRoomReq.getPay(),postRoomReq.getIsPhoto(),postRoomReq.getIsWakeUpService(),postRoomReq.getLatitude(),postRoomReq.getLongitude());
+                postRoomReq.getBackGround(),code,postRoomReq.getIsAlone(),postRoomReq.getIsOpen(),postRoomReq.getPlaceName(),
+                postRoomReq.getIsPay(),postRoomReq.getPay(),postRoomReq.getIsPhoto(),postRoomReq.getIsWakeUpService(),
+                postRoomReq.getLatitude(),postRoomReq.getLongitude(),postRoomReq.getMeetDay());
         RoomInfo r = roomInfoRepository.save(roomInfo);
         UserRoomInfo userRoomInfo = new UserRoomInfo(userInfo, r);
         userRoomInfoRepository.save(userRoomInfo);

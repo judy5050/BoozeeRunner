@@ -12,6 +12,7 @@ public class PostRoomReq {
 
     private String roomName;
     private String roomType;
+    //만나는 요일 string으로 변경
     private Integer meetNumber;
     private String isMorning;
     private String meetTime;
@@ -27,5 +28,7 @@ public class PostRoomReq {
     private Double longitude;
     private String placeName;
     private String isWakeUpService;
+    //만나는 요일
+    private String meetDay;
 
 }

@@ -83,7 +83,7 @@ public class UserInfoController {
             return new BaseResponse<>(BaseResponseStatus.EMPTY_NICKNAME);
         }
 
-        System.out.println("parameters = " + parameters.getEmail());
+//        System.out.println("parameters = " + parameters.getEmail());
         // 2. Post UserInfo
         try {
             PostUserRes postUserRes = userInfoService.createUserInfo(parameters);

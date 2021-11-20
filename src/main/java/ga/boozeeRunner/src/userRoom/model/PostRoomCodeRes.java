@@ -7,5 +7,5 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class PostRoomCodeRes {
-    private Long roomIdx;
+    private Long alarmIdx;
 }

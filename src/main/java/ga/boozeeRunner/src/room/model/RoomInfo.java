@@ -96,9 +96,10 @@ public class RoomInfo extends BaseEntity {
     private int perMinute;
 
 
+
     public RoomInfo(UserInfo userInfo, String roomName, String roomType, Integer meetNumber, String isMorning, String meetTime, String startDate,
                     String endDate,String backGround,String code,String isAlone,String isOpen,
-                    String placeName,String isPay,int pay,String  isPhoto,String isWakeUpService,Double latitude,Double longitude) {
+                    String placeName,String isPay,int pay,String  isPhoto,String isWakeUpService,Double latitude,Double longitude,String meetDay) {
         this.userInfo=userInfo;
         this.roomName=roomName;
         this.roomType=roomType;
@@ -118,6 +119,6 @@ public class RoomInfo extends BaseEntity {
         this.isWakeUpService=isWakeUpService;
         this.latitude=latitude;
         this.longitude=longitude;
-
+        this.meetDay=meetDay;
     }
 }

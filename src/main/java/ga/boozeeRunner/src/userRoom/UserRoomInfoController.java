@@ -4,6 +4,8 @@ package ga.boozeeRunner.src.userRoom;
 import ga.boozeeRunner.config.BaseException;
 import ga.boozeeRunner.config.BaseResponse;
 import ga.boozeeRunner.config.BaseResponseStatus;
+import ga.boozeeRunner.src.alarm.AlarmInfoService;
+import ga.boozeeRunner.src.alarm.model.AlarmInfo;
 import ga.boozeeRunner.src.room.RoomInfoService;
 import ga.boozeeRunner.src.room.model.*;
 import ga.boozeeRunner.src.user.UserInfoService;
@@ -26,6 +28,7 @@ public class UserRoomInfoController {
     private final UserRoomInfoService userRoomInfoService;
     private final UserInfoService userInfoService;
     private final RoomInfoService roomInfoService;
+    private final AlarmInfoService alarmInfoService;
 
     /**
      * 방 조회
@@ -49,13 +52,12 @@ public class UserRoomInfoController {
     }
 
     /**
-     * 초대 코드 입력 후 방 접속
+     * 초대 코드 입력 후 초대 요청 메시지 전송
      */
     @PostMapping("/room/code")
     public BaseResponse<PostRoomCodeRes> getRoomInfoList(@RequestBody PostRoomCodeReq postRoomCodeReq){
         Long userId;
 
-        List<GetUserRoomListRes> getUserRoomListRes;
         RoomInfo roomInfo;
         try {
             //조회할 유저 인덱스
@@ -63,7 +65,14 @@ public class UserRoomInfoController {
             userId = jwtService.getUserId();
             UserInfo userInfo = userInfoService.getUserInfo(userId);
             roomInfo = roomInfoService.getRoomInfo(postRoomCodeReq.getCode());
-            userRoomInfoService.createdUserRoomInfo(userInfo,roomInfo);
+
+            //TODO 초대  코드 입력시 방장에게 신청알림이 가도록 만들기 
+//            userRoomInfoService.createdUserRoomInfo(userInfo,roomInfo);
+            try {
+                AlarmInfo alarmInfo = alarmInfoService.createdRoomJoinAlarm(userInfo, roomInfo);
+            }catch (BaseException e){
+                return new BaseResponse<>(e.getStatus());
+            }
 
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
@@ -94,7 +103,5 @@ public class UserRoomInfoController {
         }
 
         return new BaseResponse<>(BaseResponseStatus.SUCCESS,new GetRoomUserInfoListRes(roomUserList));
-
-
     }
 }

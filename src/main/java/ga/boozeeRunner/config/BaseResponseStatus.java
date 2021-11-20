@@ -45,6 +45,9 @@ public enum BaseResponseStatus {
     DUPLICATED_USER_NICK_NAME(false, 3017, "이미 존재하는 닉네임입니다."),
     NOT_FOUND_ROOM(false, 3018, "존재하지 않는 방입니다."),
     ALREADY_USE_ROOM_CODE(false, 3019, "이미 들어와있는 방 입니다."),
+    ALREADY_ALARM_ROOM_CODE(false, 3020, "이미 신청을 보낸 방 입니다."),
+    NOT_FOUND_ALARM(false, 3021, "존재하지 않는 알람입니다."),
+    ALREADY_JOIN_OR_REJECT(false, 3022, "이미 요청을 수락하거나 거절한 요청입니다."),
 
     // 4000 : Database 오류
     SERVER_ERROR(false, 4000, "서버와의 통신에 실패하였습니다."),

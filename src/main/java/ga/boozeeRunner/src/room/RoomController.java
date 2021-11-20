@@ -20,7 +20,11 @@ public class RoomController {
     private final RoomInfoService roomInfoService;
     private final UserInfoService userInfoService;
 
-//    @GetMapping("/")
+    /**
+     * 스터디 등록
+     * @param postRoomReq
+     * @return
+     */
 
     @PostMapping("/room")
     public BaseResponse<PostRoomRes>postRoom(@RequestBody PostRoomReq postRoomReq)  {
@@ -60,6 +64,12 @@ public class RoomController {
 
             return new BaseResponse<>(BaseResponseStatus.INVALID_ROOM_NAME);
         }
+        //만나는 요일
+        if(postRoomReq.getMeetDay()==null||postRoomReq.getMeetDay().length()<=0){
+
+            return new BaseResponse<>(BaseResponseStatus.INVALID_ROOM_NAME);
+        }
+
 
 
         PostRoomRes postRoomRes;
@@ -104,7 +114,7 @@ public class RoomController {
     /**
      * 방 정보 단건 조회
      */
-    @GetMapping("users/rooms/{roomIdx}")
+    @GetMapping("/users/rooms/{roomIdx}")
     public BaseResponse<GetRoomInfoRes> getRoomInfo(@PathVariable Long roomIdx) throws BaseException {
 
         GetRoomInfoRes getRoomInfoRes;
